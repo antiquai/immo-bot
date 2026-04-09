@@ -38,7 +38,7 @@ Before you start, ensure you have:
 1. Telegram Bot Token: Obtain one from [@BotFather](https://t.me/BotFather).
 2. Python 3.14+ (for local setup) or Docker installed.
 3. Target URL: The specific search results URL from the real estate portal you are monitoring.
-    in my case it is Rentola.de ()
+    in my case it is Local Estate Agrigator
 ---
 
 ### 🐳 Deployment via Docker (Recommended)
