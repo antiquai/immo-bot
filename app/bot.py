@@ -42,34 +42,19 @@ def get_reply_keyboard():
 # Fetching recent list from Database ---
 def fetch_data(link):
     # Try setch data from DB. If there no DB use function from __db_controller.py__
+    db_path = os.path.join(normalize_db_path, "data.db")
+
+    def get_records():
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM flats')
+            return cursor.fetchall()
     try:
-        db_path = os.path.join(normalize_db_path, "data.db")
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-
-        cursor.execute('''SELECT * FROM flats''')
-
-        data = cursor.fetchall()
-
-        conn.close()
-        # Return full table from Database
-        return data
-    except:
-        # Create DB, Table and Insert first data
+        return get_records()
+        
+    except (sqlite3.OperationalError, sqlite3.DatabaseError):
         db_insert(d_p(link))
-
-        ###
-        db_path = os.path.join(normalize_db_path, "data.db")
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-
-        cursor.execute('''SELECT * FROM flats''')
-
-        data = cursor.fetchall()
-
-        conn.close()
-        # Return full table from Database
-        return data
+        return get_records()
 
 # Updating list , and returning them if there are some new ---
 def update_flats(link):
@@ -151,20 +136,20 @@ async def get_info_handler(message: types.Message):
 async def update_handler(message: types.Message):
     await message.answer('<b>Got it!</b>, im gonna try to refresh it', parse_mode="HTML")
 
-    time.sleep(2)
+    await asyncio.sleep(2)
 
-    update_flats(url)
-    recent_data = fetch_latest_flats(5)
-    formate = format_message(recent_data)
+    new_count = update_flats(url)
 
-    if update_flats(url) == 0:
+    if new_count == 0:
+        recent_data = fetch_latest_flats(5)
+        formate = format_message(recent_data)
         await message.answer('<b>There is no new flats, please try again later, or see latest List! :) </b>', parse_mode="HTML")
-        time.sleep(1)
+        await asyncio.sleep(1)
         await message.answer(f"<b>{formate}</b>\n\n", parse_mode="HTML")
     else:
-        update = fetch_latest_flats(update_flats(url))
-        format_update = format_message(update)
-
+        new_flats = fetch_latest_flats(new_count)
+        format_update = format_message(new_flats)
+        await message.answer(f'<b>Found {new_count} new flats!</b>', parse_mode="HTML")
         await message.answer(format_update, parse_mode="HTML")
 
 
