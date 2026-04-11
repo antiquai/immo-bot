@@ -6,7 +6,6 @@ This bot automates the tedious process of monitoring housing listings, deliverin
 
 ---
 <img width="1920" height="1080" alt="bot_structure_schema" src="https://github.com/user-attachments/assets/dca098ad-52dd-460c-b35a-59beb5b42a45" />
----
 
 ## 🚀 Key Features
 - Instant Research: Aggregates the latest rental listings (Currently focused on Hamburg, with more cities coming soon).
