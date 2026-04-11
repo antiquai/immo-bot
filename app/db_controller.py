@@ -34,7 +34,7 @@ def db_insert(full):
 
 
 # Fetching recent list from Database ---
-def fetch_data(link):
+def collect_latest_data(link):
     # Try setch data from DB. If there no DB use function from __db_controller.py__
     db_path = os.path.join(normalize_db_path, "data.db")
 
@@ -53,7 +53,7 @@ def fetch_data(link):
 
 
 # New Solving ---
-def sync_with_site(link):
+def update_data(link):
     data = d_p(link)
     db_path = os.path.join(normalize_db_path, "data.db")
 
@@ -71,7 +71,7 @@ def sync_with_site(link):
 
     return new_records
 
-def fetch_latest_flats(lim):
+def collect_newest(lim):
     db_path = os.path.join(normalize_db_path, "data.db")
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()

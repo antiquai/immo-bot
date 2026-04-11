@@ -7,7 +7,7 @@ from aiogram.filters import CommandStart
 from dotenv import load_dotenv
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram import F
-from db_controller import fetch_data, fetch_latest_flats, sync_with_site
+from db_controller import collect_latest_data, collect_newest, update_data
 
 # Te reach database-file everywhere
 normalize_db_path = os.path.dirname(os.path.abspath(__file__))
@@ -65,9 +65,9 @@ async def command_start_handler(message) -> None:
 @dp.message(F.text == '📊 Full flats list')
 async def get_info_handler(message: types.Message):
 
-    sync_with_site(url)
+    update_data(url)
 
-    flats = fetch_data(url)
+    flats = collect_latest_data(url)
     formate = format_message(flats)
 
     await message.answer(formate, parse_mode="HTML")
@@ -77,11 +77,11 @@ async def get_info_handler(message: types.Message):
 async def update_handler(message: types.Message):
     await message.answer('<b>Got it!</b> Checking for new ads...', parse_mode="HTML")
 
-    new_flats = sync_with_site(url)
+    new_flats = update_data(url)
     await asyncio.sleep(2)
 
     if not new_flats:
-        recent_data = fetch_latest_flats(5)
+        recent_data = collect_newest(5)
         formate = format_message(recent_data)
         await message.answer('<b>No new flats found since last check.</b>', parse_mode="HTML")
         await asyncio.sleep(1)
