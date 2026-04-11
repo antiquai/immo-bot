@@ -100,6 +100,26 @@ def fetch_latest_flats(lim):
 
     return data
 
+def sync_with_site(link):
+    data = d_p(link)
+    db_path = os.path.join(normalize_db_path, "data.db")
+
+    new_records = []
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        for price, href in data:
+            cursor.execute('SELECT * FROM flats WHERE link = ?', (href,))
+            exists = cursor.fetchone()
+
+        if not exists:
+            cursor.execute('INSERT INTO flats (link, price) VALUES (?, ?)', (href, price))
+            new_records.append((href, price))
+
+        conn.commit()
+
+    return new_records
+
 # Prepare answer in message format ---
 def format_message(exm):
     # Master answer
@@ -126,6 +146,9 @@ async def command_start_handler(message) -> None:
 # Reply on "Flat list"-button
 @dp.message(F.text == '📊 Full flats list')
 async def get_info_handler(message: types.Message):
+
+    sync_with_site(url)
+
     flats = fetch_data(url)
     formate = format_message(flats)
 
@@ -134,22 +157,20 @@ async def get_info_handler(message: types.Message):
 # Reply on "Update list"-button
 @dp.message(F.text == "🔄 Update list")
 async def update_handler(message: types.Message):
-    await message.answer('<b>Got it!</b>, im gonna try to refresh it', parse_mode="HTML")
+    await message.answer('<b>Got it!</b> Checking for new ads...', parse_mode="HTML")
 
+    new_flats = sync_with_site(url)
     await asyncio.sleep(2)
 
-    new_count = update_flats(url)
-
-    if new_count == 0:
+    if not new_flats:
         recent_data = fetch_latest_flats(5)
         formate = format_message(recent_data)
-        await message.answer('<b>There is no new flats, please try again later, or see latest List! :) </b>', parse_mode="HTML")
+        await message.answer('<b>No new flats found since last check.</b>', parse_mode="HTML")
         await asyncio.sleep(1)
-        await message.answer(f"<b>{formate}</b>\n\n", parse_mode="HTML")
+        await message.answer(f"<b>Last 5 added:</b>\n\n{formate}", parse_mode="HTML")
     else:
-        new_flats = fetch_latest_flats(new_count)
         format_update = format_message(new_flats)
-        await message.answer(f'<b>Found {new_count} new flats!</b>', parse_mode="HTML")
+        await message.answer(f'<b>Found {len(new_flats)} new flats!</b>', parse_mode="HTML")
         await message.answer(format_update, parse_mode="HTML")
 
 
