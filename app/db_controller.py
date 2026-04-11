@@ -13,8 +13,6 @@ normalize_db_path = os.path.dirname(os.path.abspath(__file__))
 # Loading environments variables: URL
 load_dotenv()
 
-url = os.getenv("url")
-
 def db_insert(full):
     # Connecting to DB
     db_path = os.path.join(normalize_db_path, "data.db")
