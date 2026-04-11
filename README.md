@@ -5,7 +5,8 @@ The ultimate tool for rapid real estate research in Germany's major cities.
 This bot automates the tedious process of monitoring housing listings, delivering real-time updates directly to your Telegram. No more manual refreshing—let the bot handle the search while you focus on the application.
 
 ---
-<img width="1920" height="1080" alt="bot_structure_schema" src="https://github.com/user-attachments/assets/dca098ad-52dd-460c-b35a-59beb5b42a45" />
+<img width="1920" height="1080" alt="schema" src="https://github.com/user-attachments/assets/5e0618e0-1bd9-436e-b3d3-1d5c4460e326" />
+
 
 ## 🚀 Key Features
 - Instant Research: Aggregates the latest rental listings (Currently focused on Hamburg, with more cities coming soon).
