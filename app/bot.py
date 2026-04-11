@@ -96,7 +96,7 @@ async def update_handler(message: types.Message):
 
 # Compiling of Bot ++ Logging --
 async def main():
-    db_init(d_p(url))
+    db_init(url)
     logging.basicConfig(level=logging.INFO)
     print("Bot is running...")
     await dp.start_polling(bot)
