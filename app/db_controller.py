@@ -9,8 +9,9 @@ from parser import data_parser as d_p
 
 normalize_db_path = os.path.dirname(os.path.abspath(__file__))
 
-def db_init(full):
+def db_init(link):
     # Connecting to DB
+    data_cluster = d_p(link)
     db_path = os.path.join(normalize_db_path, "data.db")
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
@@ -24,7 +25,7 @@ def db_init(full):
             ''')
 
         # Write data from Parser down
-        for p, l in full:
+        for p, l in data_cluster:
             cursor.execute("INSERT INTO flats (link, price) VALUES (?,?)", (l, p))
 
 
