@@ -5,13 +5,9 @@
 import sqlite3
 import os
 
-from dotenv import load_dotenv
 from parser import data_parser as d_p
 
 normalize_db_path = os.path.dirname(os.path.abspath(__file__))
-
-# Loading environments variables: URL
-load_dotenv()
 
 def db_init(full):
     # Connecting to DB
