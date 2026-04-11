@@ -7,7 +7,8 @@ from aiogram.filters import CommandStart
 from dotenv import load_dotenv
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram import F
-from db_controller import collect_latest_data, collect_newest, update_data
+from db_controller import db_init, collect_latest_data, collect_newest, update_data
+from parser import data_parser as d_p
 
 # Te reach database-file everywhere
 normalize_db_path = os.path.dirname(os.path.abspath(__file__))
@@ -95,6 +96,7 @@ async def update_handler(message: types.Message):
 
 # Compiling of Bot ++ Logging --
 async def main():
+    db_init(d_p(url))
     logging.basicConfig(level=logging.INFO)
     print("Bot is running...")
     await dp.start_polling(bot)

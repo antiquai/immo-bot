@@ -6,6 +6,8 @@ This bot automates the tedious process of monitoring housing listings, deliverin
 
 ---
 
+---
+
 ## 🚀 Key Features
 - Instant Research: Aggregates the latest rental listings (Currently focused on Hamburg, with more cities coming soon).
 - User-Friendly Interface: Interaction via custom Reply Buttons—no need to memorize slash commands.

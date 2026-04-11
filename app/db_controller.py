@@ -13,7 +13,7 @@ normalize_db_path = os.path.dirname(os.path.abspath(__file__))
 # Loading environments variables: URL
 load_dotenv()
 
-def db_insert(full):
+def db_init(full):
     # Connecting to DB
     db_path = os.path.join(normalize_db_path, "data.db")
     with sqlite3.connect(db_path) as conn:
@@ -48,7 +48,7 @@ def collect_latest_data(link):
         return get_records()
 
     except (sqlite3.OperationalError, sqlite3.DatabaseError):
-        db_insert(d_p(link))
+        db_init(d_p(link))
         return get_records()
 
 
@@ -89,7 +89,7 @@ def collect_newest(lim):
     return data
 
 
-# IN CASE YOU WANT TO RECONSTRUCT DB, UNCOMMENT THIS SECTION AND START FILE
+# IN CASE YOU WANT TO RECONSTRUCT DB, UNCOMMENT THIS SECTION AND START FILE, FOR DEVELOPMENT AND REVERSE ENGINEERING PURPOSES ONLY, BE CAREFUL WITH THIS, IT CAN CAUSE DATA LOSS IF YOU HAVE SOME DATA IN DB
 
 # if __name__ == '__main__':
 #     db_insert(d_p(url))
